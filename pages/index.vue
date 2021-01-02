@@ -1,78 +1,81 @@
 <template>
-  <div class="container">
-    <div>
-      <Logo />
-      <h1 class="title">
-        terminal
-      </h1>
-      <div class="links">
-        <a
-          href="https://nuxtjs.org/"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="button--green"
-        >
-          Documentation
-        </a>
-        <a
-          href="https://github.com/nuxt/nuxt.js"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="button--grey"
-        >
-          GitHub
-        </a>
-      </div>
+  <div id="terminal" ref="canvas" class="block">
+    <div class="flex flex-row text-gray-600">
+      <pre class="text-xs mb-10">
+                  (@@@@@@@@@@@@@                  
+             @@@@@@@@   @@@   &@@@@@@@            
+          @@@@@@@@      @@@       @@@@@@@         
+       @@@ (@@@@        @@@         @@@  @@@      
+     &@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@     
+    @@   @@@@           @@@           @@@@   @@   
+   @@   /@@@            @@@            @@@    @@  
+  @@    @@@@            @@@            &@@@   ,@& 
+  @@    @@@#            @@@             @@@    @@ 
+  @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ 
+  @@    @@@/            @@@             @@@    @@ 
+  @@    @@@@            @@@            (@@@    @@ 
+   @@   %@@@            @@@            @@@    @@  
+    @@   @@@@           @@@           @@@@   @@   
+     @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@    
+       @@@ @@@@/        @@@         @@@% @@@      
+         @@@ @@@@,      @@@       @@@@(@@*        
+             @@@@@@@    @@@    @@@@@@@            
+                  @@@@@@@@@@@@@@@
+                  </pre
+      >
+      <p id="introText" class="self-center ml-20">
+        danodoesdesign terminal<br />
+        version 0.1 pre-release
+      </p>
     </div>
+    <ResponseLine>we have wares, if you have the coin</ResponseLine>
+    <CommandLine @command="runCommand" />
   </div>
 </template>
 
 <script>
-export default {}
+import ResponseLine from '../components/ResponseLine.vue'
+import CommandLine from '../components/CommandLine.vue'
+import Vue from 'vue'
+export default {
+  methods: {
+    runCommand(command) {
+      console.log('test run with ' + command)
+
+      var ResponseComponentClass = Vue.extend(ResponseLine)
+      var CommandComponentClass = Vue.extend(CommandLine)
+
+      if (command === 'success') {
+        var ResponseInstance = new ResponseComponentClass({
+          propsData: { type: 'success' },
+        })
+      } else {
+        var ResponseInstance = new ResponseComponentClass({
+          propsData: { type: 'error' },
+        })
+        ResponseInstance.$slots.default = [
+          'danodoesdesign: command not found: ' + command,
+        ]
+      }
+
+      var CommandInstance = new CommandComponentClass({})
+
+      ResponseInstance.$mount()
+      this.$refs.canvas.appendChild(ResponseInstance.$el)
+      CommandInstance.$mount()
+      this.$refs.canvas.appendChild(CommandInstance.$el)
+    },
+  },
+  mounted() {},
+}
 </script>
 
 <style>
-/* Sample `apply` at-rules with Tailwind CSS
-.container {
-@apply min-h-screen flex justify-center items-center text-center mx-auto;
-}
-*/
-.container {
-  margin: 0 auto;
-  min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
+html {
+  @apply bg-black  p-5;
 }
 
-.title {
-  font-family:
-    'Quicksand',
-    'Source Sans Pro',
-    -apple-system,
-    BlinkMacSystemFont,
-    'Segoe UI',
-    Roboto,
-    'Helvetica Neue',
-    Arial,
-    sans-serif;
-  display: block;
-  font-weight: 300;
-  font-size: 100px;
-  color: #35495e;
-  letter-spacing: 1px;
-}
-
-.subtitle {
-  font-weight: 300;
-  font-size: 42px;
-  color: #526488;
-  word-spacing: 5px;
-  padding-bottom: 15px;
-}
-
-.links {
-  padding-top: 15px;
+#introText {
+  margin-top: -5px;
 }
 </style>

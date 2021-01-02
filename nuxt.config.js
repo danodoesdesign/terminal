@@ -5,6 +5,10 @@ export default {
   // Target (https://go.nuxtjs.dev/config-target)
   target: 'static',
 
+  server: {
+    host: '0' // default: localhost
+  },
+
   // Global page headers (https://go.nuxtjs.dev/config-head)
   head: {
     title: 'terminal',
@@ -37,8 +41,6 @@ export default {
 
   // Modules (https://go.nuxtjs.dev/config-modules)
   modules: [
-    // https://go.nuxtjs.dev/pwa
-    '@nuxtjs/pwa',
   ],
 
   // Build Configuration (https://go.nuxtjs.dev/config-build)
