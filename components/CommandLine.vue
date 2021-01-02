@@ -30,6 +30,12 @@ export default {
         '<br><br>',
         ''
       )
+      // and incase of spaces, only going up to 2 atm
+      commandContent.innerHTML = commandContent.innerHTML.replace('&nbsp;', '')
+      commandContent.innerHTML = commandContent.innerHTML.replace(
+        '&nbsp;&nbsp;',
+        ''
+      )
 
       // emit that result to parent
       this.$emit('command', commandContent.innerHTML)
