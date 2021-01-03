@@ -1,8 +1,8 @@
-<template>
+<template v-bind:command="">
   <div class="block align-text-top text-gray-600" @click="focusCommandLine">
     guest@danodoesdesign %&nbsp;
     <div
-      class="inline-block align-text-top pr-64 cursor-text"
+      class="inline-block align-text-top -ml-2 pr-64 cursor-text"
       id="command-line"
       ref="commandLine"
       contenteditable="true"
@@ -40,6 +40,12 @@ export default {
 
       // emit that result to parent
       this.$emit('command', commandContent.innerHTML)
+
+      // then clear the text box
+      commandContent.innerHTML = ''
+
+      // and refocus it
+      this.focusCommandLine()
     },
   },
   mounted() {
