@@ -5,14 +5,14 @@
       id="response-line-error"
       class="inline-block align-text-top"
     >
-      <slot />
+      danodoesdesign:&nbsp;<slot />
     </div>
     <div
       v-if="type == 'success' && type != 'error' && type != 'repeated'"
       id="response-line-success"
       class="inline-block align-text-top"
     >
-      <slot />
+      danodoesdesign:&nbsp;<slot />
     </div>
     <div
       v-if="type != 'success' && type != 'error' && type != 'repeated'"

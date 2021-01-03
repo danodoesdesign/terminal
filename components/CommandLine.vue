@@ -2,12 +2,12 @@
   <div class="block align-text-top text-gray-600" @click="focusCommandLine">
     guest@danodoesdesign %&nbsp;
     <div
-      class="inline-block align-text-top -ml-2 pr-64 cursor-text"
+      class="inline-block align-text-top ml-0 sm:-ml-2 pr-64 cursor-text"
       id="command-line"
       ref="commandLine"
       contenteditable="true"
       autocomplete="off"
-      @keyup.enter="runCommand"
+      @keyup.enter="cleanAndSend"
       @click.native="focusCommandLine"
     ></div>
   </div>
@@ -19,30 +19,39 @@ export default {
       // on page load focus cursor
       this.$refs.commandLine.focus()
     },
-    runCommand() {
+    cleanAndSend() {
       // Remove the cursor through blur
       this.$refs.commandLine.blur()
 
       // get the content thats typed in
-      var commandContent = document.getElementById('command-line')
+      var rawCommandContent = document.getElementById('command-line')
 
-      // clean it of the result of typing [enter] —— it added two <br>'s instead of one for some reason
-      commandContent.innerHTML = commandContent.innerHTML.replace(
-        '<br><br>',
-        ''
-      )
-      // and incase of spaces, only going up to 2 atm
-      commandContent.innerHTML = commandContent.innerHTML.replace('&nbsp;', '')
-      commandContent.innerHTML = commandContent.innerHTML.replace(
-        '&nbsp;&nbsp;',
-        ''
-      )
+      // make it lowercase
+      var lowercaseCommandContent = rawCommandContent.innerHTML.toLowerCase()
+
+      // clean it of <div>
+      var divCleaned = lowercaseCommandContent.replace(/<div>/gi, '')
+
+      // clean it of &nbsp;
+      var spaceCleaned = divCleaned.replace(/&nbsp;/gi, '')
+
+      // clean it of <br>
+      var breakCleaned = spaceCleaned.replace(/<br>/gi, '')
+
+      /* 
+
+      leaving space here incase further cleaning becomes required
+
+      */
+
+      //making it final variable that makes the most sense
+      var cleanedCommand = breakCleaned
 
       // emit that result to parent
-      this.$emit('command', commandContent.innerHTML)
+      this.$emit('command', cleanedCommand)
 
       // then clear the text box
-      commandContent.innerHTML = ''
+      rawCommandContent.innerHTML = ''
 
       // and refocus it
       this.focusCommandLine()
