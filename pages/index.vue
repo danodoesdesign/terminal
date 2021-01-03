@@ -11,27 +11,27 @@
              @@@@@@@@   @@@   &@@@@@@@            
           @@@@@@@@      @@@       @@@@@@@         
        @@@ (@@@@        @@@         @@@  @@@      
-     &@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@     
+     &@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@     
     @@   @@@@           @@@           @@@@   @@   
    @@   /@@@            @@@            @@@    @@  
   @@    @@@@            @@@            &@@@   ,@& 
   @@    @@@#            @@@             @@@    @@ 
-  @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+  @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
   @@    @@@/            @@@             @@@    @@ 
   @@    @@@@            @@@            (@@@    @@ 
    @@   %@@@            @@@            @@@    @@  
     @@   @@@@           @@@           @@@@   @@   
-     @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@    
+     @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@    
        @@@ @@@@/        @@@         @@@% @@@      
          @@@ @@@@,      @@@       @@@@(@@*        
              @@@@@@@    @@@    @@@@@@@            
                   @@@@@@@@@@@@@@@
                   </pre
       >
-      <p id="introText" class="self-center ml-20">
+      <p id="introText" class="self-center hidden sm:inline-block ml-10">
         danodoesdesign terminal<br />
-        version 0.1 pre-release<br />
-        <a href="http://danodoes.design">learn more</a>
+        version 0.2 pre-release<br />
+        next up: airtable API to parse and respond to commands
       </p>
     </div>
     <ResponseLine>we have wares, if you have the coin</ResponseLine>
@@ -59,7 +59,7 @@ export default {
       */
 
       var responseType = 'success' // success / error / empty(default)
-      var responseContent = 'you typed anything nice job'
+      var responseContent = 'word(s) entered successfully'
 
       var ResponseComponentClass = Vue.extend(ResponseLine)
 
@@ -101,7 +101,7 @@ export default {
         var ResponseInstance = new ResponseComponentClass({
           propsData: { type: 'error' },
         })
-        ResponseInstance.$slots.default = ['danodoesdesign: no command entered']
+        ResponseInstance.$slots.default = ['no command entered']
         ResponseInstance.$mount()
         this.$refs.canvas.appendChild(ResponseInstance.$el)
       }
