@@ -32,11 +32,11 @@
         >
         <p id="introText" class="self-center hidden sm:inline-block ml-10">
           danodoesdesign terminal<br />
-          version 0.2 pre-release<br />
-          next up: airtable API to parse and respond to commands
+          version 0.3 pre-release<br />
+          next up: new methods to display results beyond a single line
         </p>
       </div>
-      <ResponseLine>we have wares, if you have the coin</ResponseLine>
+      <ResponseLine>you should `r dance`</ResponseLine>
       <CommandLine id="the-line" v-on:command="progressTerminal" />
     </div>
     <div v-else>
@@ -47,6 +47,7 @@
 
 <script>
 import ResponseLine from '../components/ResponseLine.vue'
+import HelpTable from '../components/HelpTable.vue'
 import Vue from 'vue'
 import VuePapaParse from 'vue-papa-parse'
 Vue.use(VuePapaParse)
@@ -54,7 +55,7 @@ Vue.use(VuePapaParse)
 export default {
   data: function () {
     return {
-      terminalView: true,
+      terminalView: true, // when false displays a 'booted program', but right now its just DanceParty
       commandsList: [],
     }
   },
@@ -64,16 +65,19 @@ export default {
 
   methods: {
     readCSV() {
-      // init Papa Parse with defined commands.csv sitting in static/
+      // init Papa Parse with defined commands.csv sitting in /static/
+      console.log('readCSV called')
       var file = 'commands.csv'
       this.$papa.parse(file, {
         // https://www.papaparse.com/docs -> parse remote file
         download: true,
-        complete: this.onReadCSVComplete, // run seperate method (weird hack that made this work)
+        complete: this.onReadCSVComplete, // run seperate method (weird hack that made this work in Vue or Nuxt idk)
       })
     },
 
     onReadCSVComplete(results, file) {
+      console.log('onReadCSVComplete called, result was')
+      console.log(this.commandsList)
       this.commandsList = results.data // set the Papa Parse returned data to the exisiting variable
     },
 
@@ -82,13 +86,10 @@ export default {
     },
 
     setTerminalView() {
-      console.log('terminal view called')
       this.terminalView = true
     },
 
     runCommand(command) {
-      console.log('runCommand called with ' + command)
-
       //define variables to be used below
       var responseType = '' // can be success / error / empty(default)
       var responseContent = ''
@@ -98,12 +99,41 @@ export default {
         // loop through the parse results
         if (this.commandsList[i][0] == command) {
           // when the entered command matches the first column parse result
-          responseType = 'success'
-          responseContent = this.commandsList[i][1] // fill the variables from before, we actually do stuff with them below
+
+          if (this.commandsList[i][1] == 'line') {
+            // matches second column, which is the command response type. so far only: line
+            console.log('command found of type line')
+            responseType = 'success'
+            responseContent = this.commandsList[i][2] // fill the variables from before, we actually do stuff with them below
+          } else if (this.commandsList[i][1] == 'table') {
+            //effectively, any command of type 'table' meaning there could be heaps of versions as a catchall, will list the help list
+            console.log('command found of type table')
+            var TableComponentClass = Vue.extend(HelpTable) // create uninitiated instance of HelpTable component
+            var TableInstance = new TableComponentClass({
+              propsData: { commandsList: this.commandsList },
+            })
+            TableInstance.$mount() // mount this instance
+            this.$refs.canvas.appendChild(TableInstance.$el) // append to the end of the div with ref of 'canvas'
+          } else {
+            console.log(
+              'command type from commands.csv ' + i + ' was not valid'
+            )
+            console.log('command type was ' + this.commandsList[i][1]) // otherwise spits fun error
+            responseType = 'error'
+            responseContent = 'system error — please contact your administrator'
+          }
           break
-        } else if (command == 'dance') {
+        } else if (command == 'r dance') {
+          // manually run dance party, need to make this better soon.
           responseContent = 'stop dancing'
           this.terminalView = false
+          break
+        } else if (command == 'r ref') {
+          // reload (ie just re-get commands.csv)
+          this.readCSV()
+          responseType = 'success'
+          responseContent = 'commands refreshed'
+          break
         } else {
           responseType = 'error'
           responseContent = 'no such command'

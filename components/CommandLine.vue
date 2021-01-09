@@ -1,6 +1,6 @@
 <template v-bind:command="">
   <div class="block align-text-top text-gray-600" @click="focusCommandLine">
-    guest@danodoesdesign %&nbsp;
+    guest@ddt %&nbsp;
     <div
       class="inline-block align-text-top ml-0 sm:-ml-2 pr-64 cursor-text"
       id="command-line"
@@ -29,8 +29,11 @@ export default {
       // make it lowercase
       var lowercaseCommandContent = rawCommandContent.innerHTML.toLowerCase()
 
+      // remove forward slashes
+      var slashCleaned = lowercaseCommandContent.replace(/\//g, '')
+
       // clean it of <div>
-      var divCleaned = lowercaseCommandContent.replace(/<div>/gi, '')
+      var divCleaned = slashCleaned.replace(/<div>/gi, '')
 
       // clean it of &nbsp;
       var spaceCleaned = divCleaned.replace(/&nbsp;/gi, '')
