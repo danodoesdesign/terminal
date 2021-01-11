@@ -1,6 +1,10 @@
 ﻿help,helpTable
-broken,sdsdsdsd,error
+broken,sdsdsdsd
 test,line,test complete
-dance,confirm,epilepsy warning,rundance
+dance,confirm,epilepsy warning - are you sure?,rundance
 *rundance,program,DanceParty
 ref,program,Refresh
+clear,program,Clear
+*anykey,confirm,check core temperature?,ventgas
+*ventgas,confirm,core temperature normal. vent radioactive gas?,vented
+*vented,line,vent complete - likely preventing explosion

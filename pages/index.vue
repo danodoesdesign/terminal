@@ -37,7 +37,9 @@
           next: arbitrary loading bar
         </p>
       </div>
-      <ResponseLine>type `help` to see available commands</ResponseLine>
+      <ResponseLine type="default"
+        >type `help` to see available commands</ResponseLine
+      >
       <CommandLine id="the-line" v-on:command="progressTerminal" />
     </div>
     <div v-else>
@@ -96,21 +98,21 @@ export default {
     },
 
     runCommand(command) {
-      console.log(command)
-      var responseType = '' // success / error / empty(default)
+      console.log('run ' + command)
+      var responseType = '' // success / error / default
       var responseContent = ''
 
       if (this.confirmActive == true) {
         //
         // checking for Y / N
         //
-        if (command == 'y') {
+        if (command == 'y' || command == 'yes') {
           //
+          var nextCommand = this.commandsList[this.confirmIndex][3]
           this.confirmActive = false
-          this.runCommand('*' + this.commandsList[this.confirmIndex][3])
-          this.confirmIndex = ''
+          this.runCommand('*' + nextCommand)
           //
-        } else if (command == 'n') {
+        } else if (command == 'n' || command == 'no') {
           //
           this.confirmActive = false
           this.confirmIndex = ''
@@ -140,7 +142,7 @@ export default {
           var response = this.commandsList[i][2]
           var secondResponse = this.commandsList[i][3]
           //
-          if (commandKey == command) {
+          if (commandKey == command || commandKey == '*' + command) {
             //
             if (commandType == 'line') {
               //
@@ -163,7 +165,7 @@ export default {
               //
               this.confirmActive = true
               this.confirmIndex = i
-              responseContent = response + ': are you sure? (y/n)'
+              responseContent = response + ' (y/n)'
               break
               //
               //
@@ -183,6 +185,11 @@ export default {
                 responseContent = 'commands refreshed'
                 break
                 //
+              } else if (response == 'Clear') {
+                window.location.reload()
+                responseType = 'default'
+                responseContent = 'clearing..'
+                break
               }
               //
             } else {

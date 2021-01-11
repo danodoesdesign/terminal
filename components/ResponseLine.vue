@@ -15,7 +15,7 @@
       {{ terminalTitle }}:&nbsp;<slot />
     </div>
     <div
-      v-if="type == null"
+      v-if="type == 'default'"
       id="response-line-default"
       class="inline-block align-text-top"
     >
