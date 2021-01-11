@@ -1,5 +1,6 @@
-﻿help,table
-broken,notline,error
+﻿help,helpTable
+broken,sdsdsdsd,error
 test,line,test complete
-r dance
-r ref
+dance,confirm,epilepsy warning,rundance
+*rundance,program,DanceParty
+ref,program,Refresh

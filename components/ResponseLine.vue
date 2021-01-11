@@ -5,21 +5,21 @@
       id="response-line-error"
       class="inline-block align-text-top"
     >
-      ddt:&nbsp;<slot />
+      {{ terminalTitle }}:&nbsp;<slot />
     </div>
     <div
       v-if="type == 'success'"
       id="response-line-success"
       class="inline-block align-text-top"
     >
-      ddt:&nbsp;<slot />
+      {{ terminalTitle }}:&nbsp;<slot />
     </div>
     <div
       v-if="type == null"
       id="response-line-default"
       class="inline-block align-text-top"
     >
-      ddt:&nbsp;<slot />
+      {{ terminalTitle }}:&nbsp;<slot />
     </div>
     <div
       v-if="type == 'table-line'"
@@ -33,7 +33,7 @@
       id="response-line-repeated"
       class="inline-block align-text-top"
     >
-      guest@ddt %&nbsp;<slot />
+      guest@{{ terminalTitle }} %&nbsp;<slot />
     </div>
   </div>
 </template>
@@ -42,6 +42,21 @@
 export default {
   props: {
     type: String,
+  },
+  data() {
+    return {
+      terminalTitle: '',
+    }
+  },
+  methods: {
+    setDefaultTerminalTitle() {
+      if (this.terminalTitle == '') {
+        this.terminalTitle = 'terminal'
+      }
+    },
+  },
+  mounted() {
+    this.setDefaultTerminalTitle()
   },
 }
 </script>

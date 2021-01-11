@@ -1,7 +1,7 @@
 <template>
   <div>
     <div id="response-line-default" class="inline-block align-text-top">
-      <span>ddt: available commands:</span><br />
+      <span>{{ terminalTitle }}: available commands:</span><br />
     </div>
     <div ref="tableArea" class="ml-10"></div>
   </div>
@@ -14,17 +14,37 @@ export default {
   props: {
     commandsList: {},
   },
+  data() {
+    return {
+      terminalTitle: '',
+    }
+  },
+  methods: {
+    setDefaultTerminalTitle() {
+      if (this.terminalTitle == '') {
+        this.terminalTitle = 'terminal'
+      } else {
+        console.log('terminal title already set as ' + this.terminalTitle)
+      }
+    },
+  },
   mounted() {
+    this.setDefaultTerminalTitle()
     var commandsLength = this.commandsList.length
+    //
     for (var i = 0; i < commandsLength; i++) {
-      var ResponseComponentClass = Vue.extend(ResponseLine) // create uninitiated instance of ResponseLine component
-      var ResponseInstance = new ResponseComponentClass({
-        propsData: { type: 'table-line' },
-      })
-      var commandString = this.commandsList[i][0]
-      ResponseInstance.$slots.default = commandString // put the responseContent into the component's slot
-      ResponseInstance.$mount() // mount this instance
-      this.$refs.tableArea.appendChild(ResponseInstance.$el) // append to the end of the div with ref of 'canvas'
+      //
+      if (this.commandsList[i][0][0] != '*') {
+        var ResponseComponentClass = Vue.extend(ResponseLine)
+        var ResponseInstance = new ResponseComponentClass({
+          propsData: { type: 'table-line' },
+        })
+        var commandString = this.commandsList[i][0]
+        ResponseInstance.$slots.default = commandString
+        ResponseInstance.$mount()
+        this.$refs.tableArea.appendChild(ResponseInstance.$el)
+        //
+      }
     }
   },
 }
