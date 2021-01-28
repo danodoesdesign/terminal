@@ -7,8 +7,8 @@
       class="block"
       @click.native="focusCommandLine"
     >
-      <div class="flex flex-row text-gray-600">
-        <pre class="text-2xs mb-10">
+      <div v-if="!crtMode" class="flex flex-row text-gray-600">
+        <pre class="mb-10 text-2xs">
                   (@@@@@@@@@@@@@                  
              @@@@@@@@   @@@   &@@@@@@@            
           @@@@@@@@      @@@       @@@@@@@         
@@ -30,7 +30,7 @@
                   @@@@@@@@@@@@@@@
                   </pre
         >
-        <p id="introText" class="self-center hidden sm:inline-block ml-10">
+        <p id="introText" class="self-center hidden ml-10 sm:inline-block">
           danodoesdesign terminal<br />
           version 0.4 pre-release<br />
           new: confirmation step. try `dance`<br />
@@ -68,6 +68,7 @@ export default {
       commandsList: [],
       confirmActive: false,
       confirmIndex: '',
+      crtMode: false,
     }
   },
   mounted() {
@@ -183,6 +184,12 @@ export default {
                 this.readCSV()
                 responseType = 'success'
                 responseContent = 'commands refreshed'
+                break
+                //
+              } else if (response == 'CRT') {
+                this.crtMode = !this.crtMode
+                responseType = 'success'
+                responseContent = 'crt mode toggled'
                 break
                 //
               } else if (response == 'Clear') {
