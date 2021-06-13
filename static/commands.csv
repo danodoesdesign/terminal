@@ -5,7 +5,7 @@ dance,confirm,epilepsy warning - are you sure?,rundance
 *rundance,program,DanceParty
 ref,program,Refresh
 clear,program,Clear
-*crt,program,CRT
+crt,program,CRT
 *anykey,confirm,check core temperature?,ventgas
 *ventgas,confirm,core temperature normal. vent radioactive gas?,vented
 *vented,line,vent complete - likely preventing explosion
